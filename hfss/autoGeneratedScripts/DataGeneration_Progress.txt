@@ -9,6 +9,7 @@ HFSS Will only produce 25 000 points at once (maximum)
 	4 - 12 GHz to 13.5 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
 	5 - 13.5 GHz to 15 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
 	
+	Total: 1 GHz to 15 GHz - 101 000 points
 
 60 GHz Huygens:
 	1 - 20 GHz to 35 GHz - 25 000 points		not complete
