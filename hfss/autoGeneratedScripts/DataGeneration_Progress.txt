@@ -9,10 +9,20 @@ HFSS Will only produce 25 000 points at once (maximum)
 	4 - 12 GHz to 13.5 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
 	5 - 13.5 GHz to 15 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
 	
-	Total: 1 GHz to 15 GHz - 101 000 points
+	Total: 1 GHz to 15 GHz - 101 000 points 	(Complete - Shaun 09 OCT 2019)
 
 60 GHz Huygens:
-	1 - 20 GHz to 35 GHz - 25 000 points		not complete
-	2 - 35 GHz to 50 GHz - 25 000 points		not complete
-	3 - 50 GHz to 65 GHz - 25 000 points		not complete
-	4 - 65 GHz to 80 GHz - 25 000 points		not complete
+	1 - 20 GHz to 25 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	2 - 25 GHz to 30 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	3 - 30 GHz to 35 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	4 - 35 GHz to 40 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	5 - 40 GHz to 45 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	6 - 45 GHz to 50 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	7 - 50 GHz to 55 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	8 - 55 GHz to 60 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	9 - 60 GHz to 65 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	10 - 65 GHz to 70 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	11 - 70 GHz to 75 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	12 - 75 GHz to 80 GHz - 25 000 points		(In Progress - 09 OCT 2019 - Shaun)
+	
+	Total: 20 GHz to 80 GHz - 300 000 points
