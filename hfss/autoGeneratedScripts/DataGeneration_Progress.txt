@@ -2,7 +2,7 @@ Data Generation Record:
 
 HFSS Will only produce 25 000 points at once (maximum)
 
-10GHz Puck:
+10GHz Puck: RE, IM, Angel, Mag
 	1 - 1 GHz to 9 GHz - 1000 Points		(Complete - Shaun 09 OCT 2019)
 	2 - 9 GHz to 10.5 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
 	3 - 10.5 GHz to 12 GHz - 25 000 Points	        (Complete - Shaun 09 OCT 2019)
@@ -11,7 +11,7 @@ HFSS Will only produce 25 000 points at once (maximum)
 	
 	Total: 1 GHz to 15 GHz - 101 000 points 	(Complete - Shaun 09 OCT 2019)
 
-60 GHz Huygens:
+60 GHz Huygens: RE, IM, Angel, Mag
 	1 - 20 GHz to 25 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
 	2 - 25 GHz to 30 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
 	3 - 30 GHz to 35 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
