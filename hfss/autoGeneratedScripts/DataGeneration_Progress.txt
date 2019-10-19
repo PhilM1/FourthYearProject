@@ -1,5 +1,6 @@
 Data Generation Record:
 
+***************************************  BELOW DATA IS NOT RELIABLE ****************************************
 HFSS Will only produce 25 000 points at once (maximum)
 
 10GHz Puck: RE, IM, Angel, Mag
@@ -26,3 +27,15 @@ HFSS Will only produce 25 000 points at once (maximum)
 	12 - 75 GHz to 80 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
 	
 	Total: 20 GHz to 80 GHz - 300 000 points	(Complete - Shaun 09 OCT 2019)
+
+***************************************  ABOVE DATA IS NOT RELIABLE ****************************************
+
+~~~~~~~~~~~  10 GHz Puck ~~~~~~~~~~~
+
+1 to 15 GHz:
+	1 - Re - 25 000 points				(Initiated 19 OCT 2019: 1100)
+	2 - Im - 25 000 points				(Initiated 19 OCT 2019: 1100)
+	3 - Mag - 25 000 points				(Initiated 19 OCT 2019: 1100)
+	4 - Ang - 25 000 points				(Initiated 19 OCT 2019: 1100)
+
+
