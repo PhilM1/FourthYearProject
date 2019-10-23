@@ -1,44 +1,27 @@
-Data Generation Record:
-
-***************************************  BELOW DATA IS NOT RELIABLE ****************************************
-		``````````````````````  TO DELETE 20 OCT 2019 `````````````````````````````
-HFSS Will only produce 25 000 points at once (maximum)
-
-10GHz Puck: RE, IM, Angel, Mag
-	1 - 1 GHz to 9 GHz - 1000 Points		(Complete - Shaun 09 OCT 2019)
-	2 - 9 GHz to 10.5 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
-	3 - 10.5 GHz to 12 GHz - 25 000 Points	        (Complete - Shaun 09 OCT 2019)
-	4 - 12 GHz to 13.5 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
-	5 - 13.5 GHz to 15 GHz - 25 000 Points		(Complete - Shaun 09 OCT 2019)
-	
-	Total: 1 GHz to 15 GHz - 101 000 points 	(Complete - Shaun 09 OCT 2019)
-
-60 GHz Huygens: RE, IM, Angel, Mag
-	1 - 20 GHz to 25 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	2 - 25 GHz to 30 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	3 - 30 GHz to 35 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	4 - 35 GHz to 40 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	5 - 40 GHz to 45 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	6 - 45 GHz to 50 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	7 - 50 GHz to 55 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	8 - 55 GHz to 60 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	9 - 60 GHz to 65 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	10 - 65 GHz to 70 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	11 - 70 GHz to 75 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	12 - 75 GHz to 80 GHz - 25 000 points		(Complete - Shaun 09 OCT 2019)
-	
-	Total: 20 GHz to 80 GHz - 300 000 points	(Complete - Shaun 09 OCT 2019)
-		``````````````````````  TO DELETE 20 OCT 2019 `````````````````````````````
-***************************************  ABOVE DATA IS NOT RELIABLE ****************************************
-
-~~~~~~~~~~~  10 GHz Puck ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  10 GHz Puck ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Theta = 0; Phi = 0; Solution Frequencies = (2, 10.76, 15)GHz 
 
 1 to 15 GHz:
-	1 - Re - 25 000 points				(Initiated 19 OCT 2019: 1100)
-	2 - Im - 25 000 points				(Initiated 19 OCT 2019: 1100)
-	3 - Mag - 25 000 points				(Initiated 19 OCT 2019: 1100)
-	4 - Ang - 25 000 points				(Initiated 19 OCT 2019: 1100)
+	1 - Re - 25 000 points				(Initiated 19 OCT 2019: 1100) (Completed 19 OCT 2019: 1535)
+	2 - Im - 25 000 points				(Initiated 19 OCT 2019: 1100) (Completed 19 OCT 2019: 1535)
+	3 - Mag - 25 000 points				(Initiated 19 OCT 2019: 1100) (Completed 19 OCT 2019: 1535)
+	4 - Ang - 25 000 points				(Initiated 19 OCT 2019: 1100) (Completed 19 OCT 2019: 1535)
 
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  60 GHz Huygens ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Theta = 0; Phi = 0; Solution Frequencies = (75)GHz 
+
+45 to 75 GHz:
+	1- S12:12
+		a - Re - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		b - Im - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		c - Mag - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		d - Ang - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		
+	2 - S12:22
+		a - Re - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		b - Im - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		c - Mag - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
+		d - Ang - 25 000 points				(Initiated 19 OCT 2019: 1100)(Completed 20 OCT 2019: 1735)
