@@ -1,5 +1,6 @@
 # ----------------------------------------------
 # Script Recorded by ANSYS Electronics Desktop Version 2019.2.0
+#Adjusting geometry is not a direct method where you input the exact radius, but where you manipulate the exsisting radius with a scale of itself.
 # 20:45:05  Oct 28, 2019
 # ----------------------------------------------
 import ScriptEnv
