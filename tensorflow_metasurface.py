@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
-from tensorflow import saved_model
+from tensorflow import saved_model, get_logger
 import numpy as np
 import csv
 import configparser
 import os
+from clint.textui import progress
+from clint.textui import colored as coloured
 
 
 def parse_config():
@@ -23,10 +25,10 @@ def find_new_data(abs_data_path, rel_model_path):
     for root, dirs, files in os.walk(abs_data_path):
         for data_file in files:
             if data_file.endswith(".csv") and data_file.split(".")[0] not in model_list:
-                print("[*] Found new data set: %s" % data_file)
+                print(coloured.green("[*] Found new data set: %s" % data_file))
                 data_list.append(os.path.join(root, data_file))
     if len(data_list) == 0:
-        print("[*] No new data was found")
+        print(coloured.yellow("[*] No new data was found"))
     return data_list
 
 
@@ -34,6 +36,7 @@ def tensorflow_train(np_inputs, np_outputs, model_path):
     # define model and metrics we are interested in, tanh or elu activations seem to give best results so far
     # going with rmsprop for now, subject to change
     # tracking mse and accuracy for comparisons to Matlab
+    get_logger().setLevel('ERROR')
     if len(np_inputs.shape) > 1:
         dimensions = np_inputs.shape[1]
     else:
@@ -60,7 +63,9 @@ def main():
     
     # loop over every csv file in data directory and train a NN with it
     i = 1
-    for data_set in csv_files:
+    print(coloured.cyan("[*] Training neural networks for new data sets..."))
+    print(coloured.cyan("[*] Throwing some extra junk in the terminal because of an open Tensorflow bug: https://github.com/tensorflow/tensorflow/issues/31870"))
+    for data_set in progress.bar(csv_files, expected_size=len(csv_files)):
         csvfile = open(data_set, "r")
         csvreader = csv.reader(csvfile)
 
@@ -75,7 +80,7 @@ def main():
         inputs = np.array(inputs)
         outputs = np.array(outputs)
         
-        print("[*] Training model %d of %d" % (i, len(csv_files)))
+        #print("[*] Training model %d of %d" % (i, len(csv_files)))
         new_model = tensorflow_train(inputs, outputs, trained_models)
         filename = os.path.basename(data_set).split(".")[0]       # name trained models the same as the csv file, but without the extension
 
