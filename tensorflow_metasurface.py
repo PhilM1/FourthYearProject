@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Dense, Activation
 from tensorflow import saved_model, get_logger
 import numpy as np
 import csv
+import sys
 import configparser
 import os
 from clint.textui import progress
@@ -15,7 +16,7 @@ def parse_config():
     try:
         config.read("config.yaml")
     except:
-        print("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done.")
+        print(coloured.red("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done."))
     return config
 
 
@@ -61,8 +62,11 @@ def main():
     trained_models = config["DEFAULT"]["model_path"]
     csv_files = find_new_data(abs_path, trained_models)
     
+    if len(csv_files) == 0:
+        print(coloured.cyan("[*] No new models to train, exiting..."))
+        sys.exit(0)
+
     # loop over every csv file in data directory and train a NN with it
-    i = 1
     print(coloured.cyan("[*] Training neural networks for new data sets..."))
     print(coloured.cyan("[*] Throwing some extra junk in the terminal because of an open Tensorflow bug: https://github.com/tensorflow/tensorflow/issues/31870"))
     for data_set in progress.bar(csv_files, expected_size=len(csv_files)):
@@ -80,14 +84,13 @@ def main():
         inputs = np.array(inputs)
         outputs = np.array(outputs)
         
-        #print("[*] Training model %d of %d" % (i, len(csv_files)))
         new_model = tensorflow_train(inputs, outputs, trained_models)
         filename = os.path.basename(data_set).split(".")[0]       # name trained models the same as the csv file, but without the extension
 
         try:
             saved_model.save(new_model, os.path.join(trained_models, filename))
         except:
-            print("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?")
+            print(coloured.red("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?"))
             pass
         
         i += 1
