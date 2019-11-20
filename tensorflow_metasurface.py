@@ -3,7 +3,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
 from tensorflow import saved_model, get_logger
 import numpy as np
-import csv
+import pandas
 import sys
 import configparser
 import os
@@ -38,13 +38,19 @@ def tensorflow_train(np_inputs, np_outputs, model_path):
     # going with rmsprop for now, subject to change
     # tracking mse and accuracy for comparisons to Matlab
     get_logger().setLevel('ERROR')
+
     if len(np_inputs.shape) > 1:
-        dimensions = np_inputs.shape[1]
+        input_dimensions = np_inputs.shape[1]
     else:
-        dimensions = 1
+        input_dimensions = 1
+    if len(np_outputs.shape) > 1:
+        output_dimensions = np_outputs.shape[1]
+    else:
+        output_dimensions = 1
+        
     model = Sequential()
-    model.add(Dense(10, activation="elu", input_dim=dimensions))
-    model.add(Dense(2, activation="elu"))
+    model.add(Dense(10, activation="elu", input_dim=input_dimensions))
+    model.add(Dense(output_dimensions, activation="elu"))
     model.compile(optimizer="rmsprop", loss="mse", metrics=["accuracy"])
     
     # visualizes the built NN, commented out because it's annoying
@@ -70,30 +76,18 @@ def main():
     print(coloured.cyan("[*] Training neural networks for new data sets..."))
     print(coloured.cyan("[*] Throwing some extra junk in the terminal because of an open Tensorflow bug: https://github.com/tensorflow/tensorflow/issues/31870"))
     for data_set in progress.bar(csv_files, expected_size=len(csv_files)):
-        csvfile = open(data_set, "r")
-        csvreader = csv.reader(csvfile)
-
-        # load inputs/outputs into numpy arrays with a small portion set aside for validation
-        inputs = []
-        outputs = []
-        for row in csvreader:
-            if "Freq" in row[0]:    # probably a better way to do this, but it works for our data
-                continue
-            inputs.append(float(row[0]))
-            outputs.append([float(row[1]), float(row[2])])
-        inputs = np.array(inputs)
-        outputs = np.array(outputs)
+        data = pandas.read_csv(data_set)
+        inputs = data.iloc[:,0].to_numpy()
+        outputs = data.iloc[:, 1:].to_numpy()
         
         new_model = tensorflow_train(inputs, outputs, trained_models)
-        filename = os.path.basename(data_set).split(".")[0]       # name trained models the same as the csv file, but without the extension
 
+        filename = os.path.basename(data_set).split(".")[0]             # name trained models the same as the csv file, but without the extension
         try:
             saved_model.save(new_model, os.path.join(trained_models, filename))
         except:
             print(coloured.red("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?"))
             pass
-        
-        i += 1
         
 
 if __name__ == "__main__":
