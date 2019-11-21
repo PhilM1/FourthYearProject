@@ -7,7 +7,7 @@ import pandas
 import sys
 import configparser
 import os
-from clint.textui import progress
+#from clint.textui import progress
 from clint.textui import colored as coloured
 
 
@@ -37,7 +37,7 @@ def tensorflow_train(np_inputs, np_outputs, model_path):
     # define model and metrics we are interested in, tanh or elu activations seem to give best results so far
     # going with rmsprop for now, subject to change
     # tracking mse and accuracy for comparisons to Matlab
-    get_logger().setLevel('ERROR')
+    #get_logger().setLevel('ERROR')
 
     if len(np_inputs.shape) > 1:
         input_dimensions = np_inputs.shape[1]
@@ -48,16 +48,15 @@ def tensorflow_train(np_inputs, np_outputs, model_path):
     else:
         output_dimensions = 1
         
+    # define the model of the neural network
     model = Sequential()
-    model.add(Dense(10, activation="elu", input_dim=input_dimensions))
+    model.add(Dense(10, activation="relu", input_dim=input_dimensions))
+    model.add(Dense(4, activation="sigmoid"))
     model.add(Dense(output_dimensions, activation="elu"))
-    model.compile(optimizer="rmsprop", loss="mse", metrics=["accuracy"])
-    
-    # visualizes the built NN, commented out because it's annoying
-    #model.summary()
+    model.compile(optimizer="Adam", loss="mse", metrics=["acc"])
     
     # Train the model over 100 epochs, iterating on the data in batches of 256 samples
-    model.fit(np_inputs, np_outputs, epochs=100, batch_size=256, verbose=0)
+    model.fit(np_inputs, np_outputs, epochs=10, batch_size=256)
 
     return model
 
@@ -73,13 +72,21 @@ def main():
         sys.exit(0)
 
     # loop over every csv file in data directory and train a NN with it
-    print(coloured.cyan("[*] Training neural networks for new data sets..."))
-    print(coloured.cyan("[*] Throwing some extra junk in the terminal because of an open Tensorflow bug: https://github.com/tensorflow/tensorflow/issues/31870"))
-    for data_set in progress.bar(csv_files, expected_size=len(csv_files)):
+    #for data_set in progress.bar(csv_files, expected_size=len(csv_files)):
+    for data_set in csv_files:
         data = pandas.read_csv(data_set)
-        inputs = data.iloc[:,0].to_numpy()
-        outputs = data.iloc[:, 1:].to_numpy()
         
+        inputs = pandas.DataFrame()
+        outputs = pandas.DataFrame()
+        for i in range(len(data.columns)):
+            if data.columns[i].startswith("im") or data.columns[i].startswith("re") or data.columns[i].startswith("mag") or data.columns[i].startswith("ang"):        # s-parameters are outputs
+                outputs[data.columns[i]] = data[data.columns[i]]
+            else:
+                inputs[data.columns[i]] = data[data.columns[i]]         # anything else that is appearing in the csv must be an input
+        inputs = inputs.to_numpy()
+        outputs = outputs.to_numpy()
+
+        print(coloured.cyan("[*] Now training model for: %s" % (data_set)))
         new_model = tensorflow_train(inputs, outputs, trained_models)
 
         filename = os.path.basename(data_set).split(".")[0]             # name trained models the same as the csv file, but without the extension
