@@ -54,11 +54,15 @@ class Optimetrics:
     def DeleteSetups(self, input):
         print("     self.module_optimetrics.DeleteSetups(" + str(input) + ")")
 
+    def EnableSetup(self, name, status):
+        print("     self.module_optimetrics.EnableSetup(" + name + "," + str(status) + ")")
+
 
 class ReportSetup:
 
     def CreateReport(self, a, b, c, d, e, f, g, h):
-        print("     self.module_report_setup.CreateReport(" + str(a) + "," + str(b) + "," + str(c) + "," + str(d) + "," + str(
+        print("     self.module_report_setup.CreateReport(" + str(a) + "," + str(b) + "," + str(c) + "," + str(
+            d) + "," + str(
             e) + "," + str(f) + "," + str(g) + "," + str(h) + ")")
 
     def ExportToFile(self, reportName, outputFile):

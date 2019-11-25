@@ -128,7 +128,7 @@ class Hfss:
                                                 [
                                                     "NAME:StartingPoint"
                                                 ],
-                                                "Sim. Setups:=", ["Setup1"],
+                                                "Sim. Setups:=", [Hfss.ANALYSIS_SETUP_NAME],
                                                 [
                                                     "NAME:Sweeps",
                                                     [
@@ -266,7 +266,7 @@ class Hfss:
                                               [
                                                   "NAME:StartingPoint"
                                               ],
-                                              "Sim. Setups:=", ["Setup1"],
+                                              "Sim. Setups:=", [Hfss.ANALYSIS_SETUP_NAME],
                                               [
                                                   "NAME:Sweeps",
                                                   [
@@ -362,15 +362,16 @@ class Hfss:
         """
         Method used to analyze and export the data to a file
         """
-        self.o_design.Analyze(Hfss.ANALYSIS_SETUP_NAME + " : " + Hfss.SWEEP_NAME)
+        self.module_optimetrics.EnableSetup(Hfss.OPTEMETRIC_SETUP_NAME, True)
+        self.module_optimetrics.SolveSetup(Hfss.OPTEMETRIC_SETUP_NAME)
         self.module_report_setup.ExportToFile(Hfss.REPORT_NAME, self.__create_file_name())
+        self.o_design.DeleteFullVariation("All", False)
+        self.module_report_setup.UpdateReports([Hfss.REPORT_NAME])
 
     def terminate(self):
         """
-        Method used to terminate this object. This method deletes all setups added to the project and outputs
-        information pertaining to the output files generated.
+        Method used to terminate this object. This method outputs information pertaining to the output files generated.
         """
-        self.module_analysis_setup.DeleteSetups([Hfss.ANALYSIS_SETUP_NAME])
-        self.module_optimetrics.DeleteSetups([Hfss.OPTEMETRIC_SETUP_NAME])
+
         print("Files outputted to" + self.output_older)
         print("File format: " + self.__create_file_format_string())

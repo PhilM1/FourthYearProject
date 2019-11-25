@@ -2,8 +2,7 @@
 This script was created to test the Hfss Class from another file
 """
 
-from Design import Design
 import DataGenerationFunctions
+from Design import Design
 
 DataGenerationFunctions.geometry_puck(Design())
-

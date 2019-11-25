@@ -17,7 +17,7 @@ def basic_test_puck(o_design):
                         "CylinderZ:=", ["Nominal"], "Crad:=", ["Nominal"], "Padding:=", ["Nominal"], "tau:=",
                         ["Nominal"],
                         "$phi_scan:=", ["All"], "$theta_scan:=", ["All"]]
-    output_folder = "H:/ELEC4908Project/PUCK10GHz/Generated Data"
+    output_folder = "C:\\Users\\denisshleifman\\Desktop\\4thYearProject\\results"
     test_object = Hfss(o_design, parameter_names, parameter_units, report_variables, output_folder)
     test_object.set_frequency_sweep(1, 1.5, 10)
 
@@ -40,7 +40,7 @@ def geometry_puck(o_design):
                         "CylinderZ:=", ["Nominal"], "Crad:=", ["Nominal"], "Padding:=", ["Nominal"], "tau:=",
                         ["Nominal"],
                         "$phi_scan:=", ["All"], "$theta_scan:=", ["All"]]
-    output_folder = "H:/ELEC4908Project/PUCK10GHz/Generated Data"
+    output_folder = "C:\\Users\\denisshleifman\\Desktop\\4thYearProject\\results"
     test_object = Hfss(o_design, parameter_names, parameter_units, report_variables, output_folder)
     test_object.set_frequency_sweep(1, 1.5, 10)
 
