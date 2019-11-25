@@ -15,5 +15,6 @@ except:
     print("Project already open")
 o_project = oDesktop.SetActiveProject("Puck10GHz_Scripting")
 o_design = o_project.SetActiveDesign("SRR2")
-DataGenerationFunctions.basic_test_puck(o_design)
-# DataGenerationFunctions.geometry_puck(o_design)
+# DataGenerationFunctions.basic_test_puck(o_design)
+# DataGenerationFunctions.geometry_puck_test(o_design)
+DataGenerationFunctions.geometry_puck_run(o_design)
