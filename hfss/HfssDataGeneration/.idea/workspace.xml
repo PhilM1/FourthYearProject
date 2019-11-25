@@ -2,20 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d107cc5-398c-4e4b-a6e3-b63c76b9043a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DataGenerationFunctions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Design.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Hfss.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HfssTest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/eshlden.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/eshlden.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Hfss.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Huygen.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/Puck.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Classes/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-40.8.0-py3.7.egg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/Lib/site-packages/setuptools-40.8.0-py3.7.egg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataGenerationFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataGenerationFunctions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Design.py" beforeDir="false" afterPath="$PROJECT_DIR$/Design.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hfss.py" beforeDir="false" afterPath="$PROJECT_DIR$/Hfss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HfssTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/HfssTest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -126,7 +118,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

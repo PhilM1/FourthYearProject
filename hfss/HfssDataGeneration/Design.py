@@ -18,6 +18,9 @@ class Design:
     def ChangeProperty(self, input):
         print("     self.o_design.ChangeProperty(" + str(input) + ")")
 
+    def DeleteFullVariation(self, val, bool):
+        print("     self.o_design.DeleteFullVariation(" + val + "," + str(bool) + ")")
+
 
 class AnalysisSetup:
 
@@ -54,12 +57,22 @@ class Optimetrics:
     def DeleteSetups(self, input):
         print("     self.module_optimetrics.DeleteSetups(" + str(input) + ")")
 
+    def EnableSetup(self, name, status):
+        print("     self.module_optimetrics.EnableSetup(" + name + "," + str(status) + ")")
+
+    def SolveSetup(self, name):
+        print("     self.module_optimetrics.SolveSetup(" + name + ")")
+
 
 class ReportSetup:
 
     def CreateReport(self, a, b, c, d, e, f, g, h):
-        print("     self.module_report_setup.CreateReport(" + str(a) + "," + str(b) + "," + str(c) + "," + str(d) + "," + str(
+        print("     self.module_report_setup.CreateReport(" + str(a) + "," + str(b) + "," + str(c) + "," + str(
+            d) + "," + str(
             e) + "," + str(f) + "," + str(g) + "," + str(h) + ")")
 
     def ExportToFile(self, reportName, outputFile):
-        print("     self.module_report_setup.ExportToFile(" + reportName + "," + outputFile + "," + str(input) + ")")
+        print("     self.module_report_setup.ExportToFile(" + reportName + "," + outputFile + ")")
+
+    def UpdateReports(self, list):
+        print("     self.module_report_setup.UpdateReports(" + str(list) + ")")
