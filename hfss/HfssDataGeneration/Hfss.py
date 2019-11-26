@@ -1,5 +1,5 @@
 """
-This file contains the Hfss class
+This file contains the Hfss class. This class is used as an interface with the HFSS program
 """
 import os
 
@@ -153,7 +153,7 @@ class Hfss:
                                                     "NAME:StartingPoint"
                                                 ],
                                                 "Sim. Setups:=", [Hfss.ANALYSIS_SETUP_NAME],
-                                                self.__genearateParameterSweepList(),
+                                                self.__generate_parameter_sweep_list(),
                                                 [
                                                     "NAME:Sweep Operations"
                                                 ],
@@ -268,9 +268,9 @@ class Hfss:
         :param value: The new parameter value
         """
         self.parameter_values[parameter_index] = value
-        self.__set_parameter(self.parameter_values[parameter_index], value, self.parameter_units[parameter_index])
+        self.__set_parameter()
 
-    def __genearateParameterSweepList(self):
+    def __generate_parameter_sweep_list(self):
         """
         Method used to set a model parameter based on its index in the parameter list
         :return: the list used with all the set parameters
@@ -281,12 +281,16 @@ class Hfss:
                                                             self.parameter_units[x]))
         return sweep_list
 
-    def __set_parameter(self, parameter_name, value, unit):
+    def set_all_parameters(self, new_parameters):
         """
-        Method used to set a model parameter
-        :param parameter_name: The parameter name in the model
-        :param value: The new value
-        :param unit: The parameter unit
+        Method used to set all parameters
+        """
+        self.parameter_values = new_parameters
+        self.__set_parameter()
+
+    def __set_parameter(self):
+        """
+        Method used to set all parameters in the program
         """
 
         self.module_optimetrics.EditSetup(Hfss.OPTEMETRIC_SETUP_NAME,
@@ -303,7 +307,7 @@ class Hfss:
                                                   "NAME:StartingPoint"
                                               ],
                                               "Sim. Setups:=", [Hfss.ANALYSIS_SETUP_NAME],
-                                              self.__genearateParameterSweepList(),
+                                              self.__generate_parameter_sweep_list(),
                                               [
                                                   "NAME:Sweep Operations"
                                               ],
