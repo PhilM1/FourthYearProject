@@ -3,6 +3,7 @@ The use of this file is to compile methods for different test types. This will m
 using different tests. Furthurmore, the creating of tests in this format will allow for them to be tested beforehand
 """
 
+from ContinuousSampling import ContinuousSampling
 from Hfss import Hfss
 
 
@@ -55,7 +56,7 @@ def geometry_puck_test(o_design):
 
 def geometry_puck_run(o_design):
     """
-    Basic theta sweep for the puck
+    Continous sampling method for puck
     :param o_design:
     """
     parameter_names = ["CylinderZ", "Crad", "$theta_scan"]
@@ -63,15 +64,12 @@ def geometry_puck_run(o_design):
     all_parameter_names = ["a", "t_sub", "t_copper", "CylinderZ", "Crad", "Padding", "tau", "$phi_scan", "$theta_scan"]
     output_folder = "C:\\Users\\denisshleifman\\Desktop\\4thYearProject\\results"
     test_object = Hfss(o_design, parameter_names, parameter_units, all_parameter_names, output_folder)
-
     test_object.set_frequency_sweep(1, 15, 25000)
+    sampling = ContinuousSampling([1, 1, 0], [10, 10, 90],0)
 
-    for x in range(10):
-        test_object.set_parameter_index(0, x + 1)
-        for y in range(10):
-            test_object.set_parameter_index(1, y + 1)
-            for z in range(90):
-                test_object.set_parameter_index(2, z + 1)
-                test_object.analyze_data()
+    while not sampling.check_finished():
+        test_object.set_all_parameters(sampling.get_current_values())
+        test_object.analyze_data()
+        sampling.increment_values()
 
     test_object.terminate()
