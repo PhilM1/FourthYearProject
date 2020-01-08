@@ -33,7 +33,7 @@ def find_new_data(abs_data_path, rel_model_path):
     return data_list
 
 
-def tensorflow_train(np_inputs, np_outputs, model_path):
+def tensorflow_train(np_inputs, np_outputs):
     # define model and metrics we are interested in, tanh or elu activations seem to give best results so far
     # going with rmsprop for now, subject to change
     # tracking mse and accuracy for comparisons to Matlab
@@ -87,7 +87,7 @@ def main():
         outputs = outputs.to_numpy()
 
         print(coloured.cyan("[*] Now training model for: %s" % (data_set)))
-        new_model = tensorflow_train(inputs, outputs, trained_models)
+        new_model = tensorflow_train(inputs, outputs)
 
         filename = os.path.basename(data_set).split(".")[0]             # name trained models the same as the csv file, but without the extension
         try:
