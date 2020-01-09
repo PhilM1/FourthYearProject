@@ -4,6 +4,8 @@ continuously sample a certain sample space
 """
 import math
 
+import SamplingMethod
+
 
 def calculateLinear(minimum, maximum, count, step):
     """
@@ -31,7 +33,7 @@ def calculateLog(minimum, maximum, count, step):
     return math.pow(maximum + 1, count / float(step)) - 1
 
 
-class ContinuousSampling:
+class ContinuousSampling(SamplingMethod):
     """
     This class is used to continuously sample a certain space such that as time goes on the granularity increases. This
     works by sampling the space at a certain granularity, then when finished, the granularity will double and the
@@ -43,35 +45,14 @@ class ContinuousSampling:
         Constructor for the ContinuousSampling Class. Initializes all variables, sets the max step to be disables
         :param minimums: minimum values for each variable
         :param maximums: maximum value for each variable
-        :param mode: 0 for linear, 1 for logarithmic
+        :param mode: 0 for linear, 1 for logarithmic for each variable, pass in 2 to test edges of the sample space
         """
-        self.numVars = len(minimums)
-        self.minimums = minimums
-        self.maximums = maximums
-        self.mode = mode
+        super(SamplingMethod).__init__(minimums, maximums, mode)
         self.step = 1
         self.count = [0] * self.numVars
         self.current_values = []
         for n in minimums:
             self.current_values.append(n)
-        self.max_step = -1
-
-    def set_max_step(self, new_max_step):
-        """
-        Sets a maximum step value. This will allow for a check to see if the maximum step has been reached.
-        Set to -1 to disable
-        :param new_max_step: the new maximum step value
-        """
-        self.max_step = new_max_step
-
-    def check_finished(self):
-        """
-        Method checks to see if the maximum step has been reached
-        :return: true if the maximum step has been reached
-        """
-        if self.max_step == -1:
-            return False
-        return self.step > self.max_step
 
     def __check_value_done(self):
         """
@@ -98,15 +79,16 @@ class ContinuousSampling:
                 return
         self.count = [0] * self.numVars
         self.step *= 2
+        self.iterations += 1
 
     def __calc_current_values(self):
         """
         Method used to update the current values (depending on the mode selected)
         """
         for n in range(self.numVars):
-            if self.mode == 0:
+            if self.mode[n] == 0:
                 self.current_values[n] = calculateLinear(self.minimums[n], self.maximums[n], self.count[n], self.step)
-            elif self.mode == 1:
+            elif self.mode[n] == 1:
                 self.current_values[n] = calculateLog(self.minimums[n], self.maximums[n], self.count[n], self.step)
 
     def increment_values(self):
@@ -122,10 +104,3 @@ class ContinuousSampling:
 
         if self.__check_value_done():
             self.increment_values()
-
-    def get_current_values(self):
-        """
-        Getter for the current values
-        :return: the current values
-        """
-        return self.current_values

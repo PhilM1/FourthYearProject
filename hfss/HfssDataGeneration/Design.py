@@ -90,7 +90,8 @@ class ReportSetup:
                 e) + "," + str(f) + "," + str(g) + "," + str(h) + ")")
 
     def ExportToFile(self, reportName, outputFile):
-        print("     self.module_report_setup.ExportToFile(" + reportName + "," + outputFile + ")")
+        if not self.output_full:
+            print("     self.module_report_setup.ExportToFile(" + reportName + "," + outputFile + ")")
 
     def UpdateReports(self, list):
         if not self.output_full:
