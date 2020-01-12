@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 
-import SamplingMethod
+from SamplingMethod import SamplingMethod
 
 
 def generate_random_value(minimum, maximum, mode):
@@ -42,13 +42,16 @@ class MonteCarlo(SamplingMethod):
         :param maximums: maximum value for each variable
         :param mode: 0 for linear, 1 for logarithmic, 2 for gaussian for each variable
         """
-        super(SamplingMethod).__init__(minimums, maximums, mode)
-        self.current_values = [0] * self.numVars
+        super(MonteCarlo, self).__init__(minimums, maximums, mode)
+        self.increment_values()
 
     def increment_values(self):
         """
         Method used to increment the current values
         """
+        if self.check_finished():
+            return
+
         self.iterations += 1
         for n in range(self.numVars):
             self.current_values[n] = generate_random_value(self.minimums[n], self.maximums[n], self.mode[n])

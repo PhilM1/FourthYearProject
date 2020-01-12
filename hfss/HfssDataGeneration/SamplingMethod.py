@@ -3,7 +3,7 @@ This file contains the ContinuousSampling Class
 """
 
 
-class ContinuousSampling:
+class SamplingMethod:
     """
     Class is used as a parent method for all sampling methods. It is intended to standardize the interaction of all of
     these types so that they can be easily used together. This class is not intended to be used on its own
@@ -20,8 +20,9 @@ class ContinuousSampling:
         self.minimums = minimums
         self.maximums = maximums
         self.mode = mode
-        self.iterations = 0
+        self.iterations = -1
         self.max_iterations = -1
+        self.current_values = [0] * self.numVars
 
     def set_max_iterations(self, new_max_iterations):
         """
@@ -38,7 +39,7 @@ class ContinuousSampling:
         """
         if self.max_iterations == -1:
             return False
-        return self.iterations > self.max_iterations
+        return self.iterations >= self.max_iterations
 
     def increment_values(self):
         """

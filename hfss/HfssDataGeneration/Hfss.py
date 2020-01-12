@@ -94,7 +94,7 @@ class Hfss:
     REPORT_NAME = "S Parameter Plot 1"
 
     def __init__(self, o_design, parameter_names, parameter_units, all_parameter_names, output_variables,
-                 output_folder, mode, testing):
+                 output_folder, testing, mode):
         """
         Default constructor for this object
         :param o_design: oDesign is an object containing the project design
@@ -103,8 +103,8 @@ class Hfss:
         :param all_parameter_names: This is the list of all the parameters
         :param output_variables: This is a list of the varables to output in the report
         :param output_folder: THis is the path to the output folder for the generated results
-        :param mode: 0 for default, 1 for fast solving to test subspace, 2 for fast solving test space and don't clear
         :param testing: true to stop generation of output log
+        :param mode: 0 for default, 1 for fast solving to test subspace, 2 for fast solving test space and don't clear
         results
         """
         self.mode = mode
@@ -125,7 +125,7 @@ class Hfss:
         self.module_optimetrics.InsertSetup("OptiParametric",
                                             generate_optiparametric_setup(self.__generate_parameter_sweep_list()))
         self.__create_report()
-        if self.mode == 0 and not self.testing:
+        if self.mode == 0 and not testing:
             self.output_file_log = open(output_folder + os.path.sep + "outputFileLog.txt", "a")
         self.testing = testing
 

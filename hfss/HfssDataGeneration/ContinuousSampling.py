@@ -4,7 +4,7 @@ continuously sample a certain sample space
 """
 import math
 
-import SamplingMethod
+from SamplingMethod import SamplingMethod
 
 
 def calculateLinear(minimum, maximum, count, step):
@@ -47,12 +47,12 @@ class ContinuousSampling(SamplingMethod):
         :param maximums: maximum value for each variable
         :param mode: 0 for linear, 1 for logarithmic for each variable, pass in 2 to test edges of the sample space
         """
-        super(SamplingMethod).__init__(minimums, maximums, mode)
+        super(ContinuousSampling, self).__init__(minimums, maximums, mode)
+        self.iterations = 0
         self.step = 1
         self.count = [0] * self.numVars
-        self.current_values = []
-        for n in minimums:
-            self.current_values.append(n)
+        for n in range(len(minimums)):
+            self.current_values[n] = minimums[n]
 
     def __check_value_done(self):
         """

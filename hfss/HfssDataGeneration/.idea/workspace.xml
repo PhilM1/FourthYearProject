@@ -2,18 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d107cc5-398c-4e4b-a6e3-b63c76b9043a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/MonteCarlo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SamplingMethod.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/HfssDataGeneration.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/HfssDataGeneration.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/RandomList.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ContinousSamplingTest.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ContinuousSampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/ContinuousSampling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataGenerationFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataGenerationFunctions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Design.py" beforeDir="false" afterPath="$PROJECT_DIR$/Design.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Hfss.py" beforeDir="false" afterPath="$PROJECT_DIR$/Hfss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hfss.wgeo.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/HfssTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/HfssTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MonteCarlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/MonteCarlo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SamplingMethod.py" beforeDir="false" afterPath="$PROJECT_DIR$/SamplingMethod.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,12 +34,13 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/venv/Scripts/python.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\eshlden\Documents\Personal\School\Fourth Year Project\GitHub\FourthYearProject\hfss\HfssDataGeneration" />
       <recent name="C:\Users\eshlden\Documents\GitHub\FourthYearProject\hfss\HfssDataGeneration" />
     </key>
   </component>
