@@ -30,7 +30,8 @@ def list_workers():
     result = compute.instances().list(project=config["DEFAULT"]["project_id"], zone=config["DEFAULT"]["zone"]).execute()
     instance_names = []
     for i in range(len(result["items"])):
-        instance_names.append(result["items"][i]["name"])
+        if result["items"][i]["name"].startswith("worker"):
+            instance_names.append(result["items"][i]["name"])
     return instance_names
 
 
@@ -43,7 +44,7 @@ def deploy_workers(amount, index):
     machine_type = "zones/%s/machineTypes/n1-standard-1" % config["DEFAULT"]["zone"]
     #startup_script = open(os.path.join(os.path.dirname(__file__), "SCRIPT_GOES_HERE"), "r").read()             # TODO: set startup_script variable here to have instance run something on boot, will likely be training script with config for specific worker be spawned
     for i in range(amount):
-        worker_index = index + amount + 1
+        worker_index = i + index
 
         # most of config taken from referenced URL
         worker_config = {
@@ -109,21 +110,29 @@ def teardown_workers(amount, index):
     creds = compute_engine.Credentials()
     compute = googleapiclient.discovery.build(credentials=creds, serviceName = "compute", version = "v1")
     for i in range(index - amount, index):
-        name = "worker-" + i
+        name = "worker-" + str(i)
         compute.instances().delete(project=config["DEFAULT"]["project_id"], zone=config["DEFAULT"]["zone"], instance=name).execute()
 
 
 def main():
     if args.list:
         available_workers = list_workers()
-        print(available_workers)
+        if len(available_workers) != 0:
+            print("[*] %d workers available" % len(available_workers))
+            print(available_workers)
+        else:
+            print("[*] No workers currently deployed. Spawn some instances with the --workers [number] script argument.")
         sys.exit(0)
     elif args.workers:
         num_workers = len(list_workers())
         if num_workers < int(args.workers):
-            deploy_workers(int(args.workers) - num_workers, num_workers)
+            to_spawn = int(args.workers) - num_workers
+            print("[*] Deploying %d worker(s)." % to_spawn)
+            deploy_workers(to_spawn, num_workers)
         elif num_workers > int(args.workers):
-            teardown_workers(num_workers - int(args.workers), num_workers)
+            to_teardown = num_workers - int(args.workers)
+            print("[*] Tearing down %d worker(s)." % to_teardown)
+            teardown_workers(to_teardown, num_workers)
         
         #send_jobs()
         print("send_jobs() doesn't exist yet")
