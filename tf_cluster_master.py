@@ -104,7 +104,14 @@ def deploy_workers(amount, index):
         }
         compute.instances().insert(project=config["DEFAULT"]["project_id"], zone=config["DEFAULT"]["zone"], body=worker_config).execute()
 
-        
+
+def teardown_workers(amount, index):
+    creds = compute_engine.Credentials()
+    compute = googleapiclient.discovery.build(credentials=creds, serviceName = "compute", version = "v1")
+    for i in range(index - amount, index):
+        name = "worker-" + i
+        compute.instances().delete(project=config["DEFAULT"]["project_id"], zone=config["DEFAULT"]["zone"], instance=name).execute()
+
 
 def main():
     if args.list:
@@ -116,8 +123,7 @@ def main():
         if num_workers < int(args.workers):
             deploy_workers(int(args.workers) - num_workers, num_workers)
         elif num_workers > int(args.workers):
-            #teardown_workers(num_workers - int(args.workers), num_workers)
-            print("teardown_workers() doesn't exist yet")
+            teardown_workers(num_workers - int(args.workers), num_workers)
         
         #send_jobs()
         print("send_jobs() doesn't exist yet")
