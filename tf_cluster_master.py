@@ -1,11 +1,13 @@
 #!/usr/bin/python3
 import sys
 import json
+import math
 import argparse
 import configparser
 from clint.textui import colored as coloured
 import googleapiclient.discovery
 from google.auth import compute_engine
+import tensorflow_metasurface
 
 
 def parse_config():
@@ -114,6 +116,38 @@ def teardown_workers(amount, index):
         compute.instances().delete(project=config["DEFAULT"]["project_id"], zone=config["DEFAULT"]["zone"], instance=name).execute()
 
 
+def split_new_data_dynamic():
+    csv_files = tensorflow_metasurface.find_new_data(config["DEFAULT"]["data_path"], config["DEFAULT"]["model_path"])
+    if len(csv_files) == 0:
+        print(coloured.cyan("[*] No new models to train, exiting..."))
+        sys.exit(0)
+    else:
+        new_data = len(csv_files)
+        queue_size = int(config["DEFAULT"]["queue_size"])
+        csv_table = []
+        for i in range(0, new_data, queue_size):
+            # python doesn't care if we go past the end of the list, it just gives what's left
+            # this will result in a varying amount of queues "queue_size" long, except for the last queue which gets the leftovers
+            csv_table.append(csv_files[i:i+queue_size])
+        return csv_table
+        
+        
+def split_new_data_static(num_workers):
+    csv_files = tensorflow_metasurface.find_new_data(config["DEFAULT"]["data_path"], config["DEFAULT"]["model_path"])
+    if len(csv_files) == 0:
+        print(coloured.cyan("[*] No new models to train, exiting..."))
+        sys.exit(0)
+    else:
+        new_data = len(csv_files)
+        queue_size = math.ceil(new_data / num_workers)
+        csv_table = []
+        for i in range(0, new_data, queue_size):
+            # python doesn't care if we go past the end of the list, it just gives what's left
+            # this will result in a varying amount of queues "queue_size" long, except for the last queue which gets the leftovers
+            csv_table.append(csv_files[i:i+queue_size])
+        return csv_table
+
+
 def main():
     if args.list:
         available_workers = list_workers()
@@ -133,9 +167,22 @@ def main():
             to_teardown = num_workers - int(args.workers)
             print("[*] Tearing down %d worker(s)." % to_teardown)
             teardown_workers(to_teardown, num_workers)
-        
-        #send_jobs()
-        print("send_jobs() doesn't exist yet")
+        batch_csv = split_new_data_static(int(args.workers))
+    else:
+        batch_csv = split_new_data_dynamic()
+        needed_workers = len(batch_csv)          # should be the number of queues in the list
+        num_workers = len(list_workers())
+        if num_workers < needed_workers:
+            to_spawn = needed_workers - num_workers
+            print("[*] Deploying %d worker(s)." % to_spawn)
+            deploy_workers(to_spawn, num_workers)
+        elif num_workers > needed_workers:
+            to_teardown = num_workers - needed_workers
+            print("[*] Tearing down %d worker(s)." % to_teardown)
+            teardown_workers(to_teardown, num_workers)  
+    
+    #serve_jobs()
+    print("serve_jobs() doesn't exist yet")
 
 
 config = parse_config()
