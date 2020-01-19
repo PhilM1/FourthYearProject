@@ -67,7 +67,9 @@ def tensorflow_train(np_inputs, np_outputs):
     # define the model of the neural network
     model = Sequential()
     model.add(Dense(10, activation="relu", input_dim=input_dimensions))
-    model.add(Dense(4, activation="sigmoid"))
+    model.add(Dense(8, activation="relu", input_dim=input_dimensions))
+    model.add(Dense(6, activation="relu", input_dim=input_dimensions))
+    model.add(Dense(4, activation="relu"))
     model.add(Dense(output_dimensions, activation="elu"))
     model.compile(optimizer="Adam", loss="mse", metrics=["acc"])
     
