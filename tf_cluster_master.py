@@ -2,6 +2,7 @@
 
 # general imports
 import sys
+import os
 import math
 import argparse
 import configparser
@@ -50,10 +51,13 @@ def list_workers():
 def deploy_workers(amount, index):
     creds = compute_engine.Credentials()
     compute = googleapiclient.discovery.build(credentials=creds, serviceName = "compute", version = "v1")
-    image = compute.images().getFromFamily(project="debian-cloud", family="debian-9").execute()                 # TODO: Using Debian-9 for now, change to deeplearning image when ready
+    image = compute.images().getFromFamily(project="deeplearning-platform-release", family="tf2-latest-cpu").execute()
     source_disk_image = image["selfLink"]
     machine_type = "zones/%s/machineTypes/n1-standard-1" % config["DEFAULT"]["zone"]
-    #startup_script = open(os.path.join(os.path.dirname(__file__), "SCRIPT_GOES_HERE"), "r").read()             # TODO: set startup_script variable here to have instance run something on boot, will likely be training script with config for specific worker be spawned
+
+    # note to future me, this is a greate guide on startup scripts and passing custom values: https://cloud.google.com/compute/docs/startupscript
+    startup_script = open(os.path.join(os.path.dirname(__file__), "worker_setup.sh"), "r").read()
+
     for i in range(amount):
         worker_index = i + index
 
@@ -95,22 +99,27 @@ def deploy_workers(amount, index):
             # pass configuration from deployment scripts to instances.
             'metadata': {
                 'items': [
-                #{
+                {
                     # Startup script is automatically executed by the
                     # instance upon startup.
-                    #'key': 'startup-script',       # TODO: UNCOMMENT THIS LATER WHEN WE HAVE A STARTUP SCRIPT TO RUN
-                    #'value': startup_script
-                #}, 
-                # {
-                #     'key': 'url',
-                #     'value': image_url
-                # }, {
-                #     'key': 'text',
-                #     'value': image_caption
-                # }, {
-                #     'key': 'bucket',
-                #     'value': bucket
-                # }
+                    'key': 'startup-script',
+                    'value': startup_script
+                }, {
+                    'key': 'project_id',
+                    'value': config["DEFAULT"]["project_id"]
+                }, {
+                    'key': 'zone',
+                    'value': config["DEFAULT"]["zone"]
+                }, {
+                    'key': 'cluster_master_ip',
+                    'value': config["DEFAULT"]["cluster_master_ip"]
+                }, {
+                    'key': 'worker_id',
+                    'value': "worker-" + str(worker_index)
+                }, {
+                    'key': 'bucket_id',
+                    'value': config["DEFAULT"]["bucket_id"]
+                }
                 ]
             }
         }
