@@ -1,12 +1,21 @@
 #!/usr/bin/python3
+
+# general imports
 import sys
-import json
 import math
 import argparse
 import configparser
 from clint.textui import colored as coloured
+
+# json api imports
+from flask import Flask
+import json
+
+# gcp utility imports 
 import googleapiclient.discovery
 from google.auth import compute_engine
+
+# custom script imports
 import tensorflow_metasurface
 
 
@@ -149,6 +158,7 @@ def split_new_data_static(num_workers):
 
 
 def main():
+    global batch_csv
     if args.list:
         available_workers = list_workers()
         if len(available_workers) != 0:
@@ -181,12 +191,22 @@ def main():
             print("[*] Tearing down %d worker(s)." % to_teardown)
             teardown_workers(to_teardown, num_workers)  
     
-    #serve_jobs()
-    print("serve_jobs() doesn't exist yet")
+    # serve datasets to workers
+    app.run()
 
 
 config = parse_config()
 args = parse_args()
+batch_csv = []
+app = Flask(__name__)
+
+
+@app.route("/<worker>")
+def serve_dataset(worker):
+    worker_list = list_workers()
+    worker_index = worker_list.index(worker)
+    return json.dumps(batch_csv[worker_index])
+
+
 if __name__ == "__main__":
     main()
-
