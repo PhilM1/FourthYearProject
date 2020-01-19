@@ -126,7 +126,7 @@ def teardown_workers(amount, index):
 
 
 def split_new_data_dynamic():
-    csv_files = tensorflow_metasurface.find_new_data(config["DEFAULT"]["data_path"], config["DEFAULT"]["model_path"])
+    csv_files = tensorflow_metasurface.find_new_data()
     if len(csv_files) == 0:
         print(coloured.cyan("[*] No new models to train, exiting..."))
         sys.exit(0)
@@ -142,7 +142,7 @@ def split_new_data_dynamic():
         
         
 def split_new_data_static(num_workers):
-    csv_files = tensorflow_metasurface.find_new_data(config["DEFAULT"]["data_path"], config["DEFAULT"]["model_path"])
+    csv_files = tensorflow_metasurface.find_new_data()
     if len(csv_files) == 0:
         print(coloured.cyan("[*] No new models to train, exiting..."))
         sys.exit(0)
@@ -192,7 +192,7 @@ def main():
             teardown_workers(to_teardown, num_workers)  
     
     # serve datasets to workers
-    app.run()
+    app.run(host="0.0.0.0")
 
 
 config = parse_config()
