@@ -1,14 +1,24 @@
 #!/usr/bin/python3
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Activation
-from tensorflow import saved_model, get_logger
+
+# general imports
 import numpy as np
 import pandas
 import sys
 import configparser
 import os
+import glob
+import shutil
+from io import StringIO
 #from clint.textui import progress
 from clint.textui import colored as coloured
+
+# tensorflow imports
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation
+from tensorflow import saved_model, get_logger
+
+# gcp utility imports
+from google.cloud import storage
 
 
 def parse_config():
@@ -20,14 +30,20 @@ def parse_config():
     return config
 
 
-def find_new_data(abs_data_path, rel_model_path):
-    model_list = os.listdir(rel_model_path)
+def find_new_data():
+    client = storage.Client()
+    bucket = client.get_bucket(config["DEFAULT"]["bucket_id"])
+    blob_list = bucket.list_blobs()
+    model_list = []
     data_list = []
-    for root, dirs, files in os.walk(abs_data_path):
-        for data_file in files:
-            if data_file.endswith(".csv") and data_file.split(".")[0] not in model_list:
-                print(coloured.green("[*] Found new data set: %s" % data_file))
-                data_list.append(os.path.join(root, data_file))
+    for blob in blob_list:
+        if blob.name.split("/")[0] == "models":
+            model_list.append(blob.name.split("/")[1])
+    blob_list = bucket.list_blobs()                 # spooky bug where the blob_list is "aware" it's being looped over, 
+    for blob in blob_list:                          # needs to be reset with another call to list_blobs()
+        if blob.name.split(".")[-1] == "csv" and blob.name.split("/")[-1].split(".")[-2] not in model_list:
+            print(coloured.green("[*] Found new data set: %s" % blob.name.split("/")[-1]))
+            data_list.append(blob)
     if len(data_list) == 0:
         print(coloured.yellow("[*] No new data was found"))
     return data_list
@@ -61,20 +77,12 @@ def tensorflow_train(np_inputs, np_outputs):
     return model
 
 
-def main():
-    config = parse_config()
-    abs_path = config["DEFAULT"]["data_path"]
-    trained_models = config["DEFAULT"]["model_path"]
-    csv_files = find_new_data(abs_path, trained_models)
-    
-    if len(csv_files) == 0:
-        print(coloured.cyan("[*] No new models to train, exiting..."))
-        sys.exit(0)
-
+def train_new_data(csv_files):
     # loop over every csv file in data directory and train a NN with it
     #for data_set in progress.bar(csv_files, expected_size=len(csv_files)):
     for data_set in csv_files:
-        data = pandas.read_csv(data_set)
+        download_data = data_set.download_as_string()
+        data = pandas.read_csv(StringIO(download_data.decode()))
         
         inputs = pandas.DataFrame()
         outputs = pandas.DataFrame()
@@ -85,17 +93,29 @@ def main():
                 inputs[data.columns[i]] = data[data.columns[i]]         # anything else that is appearing in the csv must be an input
         inputs = inputs.to_numpy()
         outputs = outputs.to_numpy()
-
-        print(coloured.cyan("[*] Now training model for: %s" % (data_set)))
+        print(coloured.cyan("[*] Now training model for: %s" % (data_set.name)))
         new_model = tensorflow_train(inputs, outputs)
-
-        filename = os.path.basename(data_set).split(".")[0]             # name trained models the same as the csv file, but without the extension
+        filename = data_set.name.split("/")[-1].split(".")[-2]             # name trained models the same as the csv file, but without the extension
         try:
-            saved_model.save(new_model, os.path.join(trained_models, filename))
+            saved_model.save(new_model, "/tmp/" + filename)
+            # you could probably pop a shell here with a malicious filename, but what's life without some excitement?
+            os.system("gsutil cp -R '/tmp/" + filename + "' gs://" + config["DEFAULT"]["bucket_id"] + "/models")
+            shutil.rmtree("/tmp/" + filename)
         except:
             print(coloured.red("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?"))
             pass
+
+
+def main():
+    csv_files = find_new_data()
+    if len(csv_files) == 0:
+        print(coloured.cyan("[*] No new models to train, exiting..."))
+        sys.exit(0)
+    train_new_data(csv_files)
         
+
+config = parse_config()
+
 
 if __name__ == "__main__":
     main()
