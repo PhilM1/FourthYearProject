@@ -205,7 +205,10 @@ app = Flask(__name__)
 def serve_dataset(worker):
     worker_list = list_workers()
     worker_index = worker_list.index(worker)
-    return json.dumps(batch_csv[worker_index])
+    to_serve = []
+    for data_set in batch_csv[worker_index]:
+        to_serve.append(data_set.name) 
+    return json.dumps(to_serve)
 
 
 if __name__ == "__main__":
