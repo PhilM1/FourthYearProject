@@ -1,0 +1,7 @@
+models/
+.vscode/
+config.yaml
+.idea/
+hfss/HfssDataGeneration/venv
+hfss/HfssDataGeneration/__pycache__
+hfss/HfssDataGeneration/.idea

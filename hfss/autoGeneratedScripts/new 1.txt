@@ -1,0 +1,24 @@
+# ----------------------------------------------
+# Script Recorded by ANSYS Electronics Desktop Version 2019.2.0
+# 9:41:24  Nov 05, 2019
+# ----------------------------------------------
+import ScriptEnv
+ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
+oDesktop.RestoreWindow()
+oProject = oDesktop.SetActiveProject("Puck10GHz_Scripting")
+oDesign = oProject.SetActiveDesign("SRR2")
+oModule = oDesign.GetModule("BoundarySetup")
+oModule.EditSlave("Slave1", 
+	[
+		"NAME:Slave1",
+		[
+			"NAME:CoordSysVector",
+			"Origin:="		, ["-10.75mm","-10.75mm","-90mm"],
+			"UPos:="		, ["-10.75mm","-10.75mm","95.08mm"]
+		],
+		"ReverseV:="		, True,
+		"Master:="		, "Master1",
+		"UseScanAngles:="	, True,
+		"Phi:="			, "0",
+		"Theta:="		, "45"
+	])

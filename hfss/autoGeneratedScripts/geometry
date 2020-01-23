@@ -1,0 +1,23 @@
+# ----------------------------------------------
+# Script Recorded by ANSYS Electronics Desktop Version 2019.2.0
+#Adjusting geometry is not a direct method where you input the exact radius, but where you manipulate the exsisting radius with a scale of itself.
+# 20:45:05  Oct 28, 2019
+# ----------------------------------------------
+import ScriptEnv
+ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
+oDesktop.RestoreWindow()
+oProject = oDesktop.SetActiveProject("Puck at 10GHz")
+oDesign = oProject.SetActiveDesign("SRR2")
+oEditor = oDesign.SetActiveEditor("3D Modeler")
+oEditor.Scale(
+	[
+		"NAME:Selections",
+		"Selections:="		, "22",
+		"NewPartsModelFlag:="	, "Model"
+	], 
+	[
+		"NAME:ScaleParameters",
+		"ScaleX:="		, "2",
+		"ScaleY:="		, "2",
+		"ScaleZ:="		, "2"
+	])
