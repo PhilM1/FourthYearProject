@@ -1,6 +1,8 @@
 [DEFAULT]
 project_id = GCP_PROJECT_ID
+bucket_id = BUCKET_ID
 zone = GCP_PROJECT_ZONE
-data_path = ABSOLUTE_PATH_TO_DATA_FOLDER_HERE
-model_path = RELATIVE_PATH_TO_MODEL_FOLDER_HERE
 progress_bar = False
+queue_size = 5
+cluster_master_ip = MASTER_IP
+worker_id = WORKER_ID
