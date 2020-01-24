@@ -126,7 +126,7 @@ class Hfss:
                                             generate_optiparametric_setup(self.__generate_parameter_sweep_list()))
         self.__create_report()
         if self.mode == 0 and not testing:
-            self.output_file_log = open(output_folder + os.path.sep + "outputFileLog.txt", "a")
+            self.output_file_log = open(Hfss.generate_output_filename(output_folder), "a")
         self.testing = testing
 
     def __create_setup_arr(self, frequency):
@@ -242,3 +242,11 @@ class Hfss:
         """
         if self.mode == 0 and not self.testing:
             self.output_file_log.close()
+
+    @classmethod
+    def generate_output_filename(cls, output_folder):
+        """
+        Function used to generate the output file list
+        :param output_folder: folder where output is generated
+        """
+        return output_folder + os.path.sep + "outputFileLog.txt"

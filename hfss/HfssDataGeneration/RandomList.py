@@ -17,7 +17,7 @@ class RandomList(SamplingMethod):
         Constructor for the RandomList Class
         :param list_in: is the inputted 2D list. Each Row is a different point to sample
         """
-        super(RandomList, self).__init__([], [], [])
+        SamplingMethod.__init__(self, [], [], [])
         random.shuffle(list_in)
         self.list = list_in
         self.num_elements = len(self.list)

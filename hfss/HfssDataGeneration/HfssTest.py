@@ -8,8 +8,6 @@ from Design import Design
 fun = DataGenerationFunctions(Design(True))
 fun.activate_test_mode()
 
-fun.random_list()
-# fun.continuous_sampling()
-# fun.monte_carlo()
+fun.samplingMethod([1, 11, 100], [1, 1, 0], [9, 9, 85], [1, 1, 10.625], 3)
 # fun.single_point()
 # fun.test_sample_space_edges()

@@ -42,7 +42,7 @@ class MonteCarlo(SamplingMethod):
         :param maximums: maximum value for each variable
         :param mode: 0 for linear, 1 for logarithmic, 2 for gaussian for each variable
         """
-        super(MonteCarlo, self).__init__(minimums, maximums, mode)
+        SamplingMethod.__init__(self, minimums, maximums, mode)
         self.increment_values()
 
     def increment_values(self):
