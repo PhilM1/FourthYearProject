@@ -4,12 +4,14 @@
 import sys
 import os
 import math
+import time
 import argparse
 import configparser
 from clint.textui import colored as coloured
+from multiprocessing import Process
 
 # json api imports
-from flask import Flask
+from flask import Flask, request
 import json
 
 # gcp utility imports 
@@ -138,7 +140,8 @@ def split_new_data_dynamic():
     csv_files = tensorflow_metasurface.find_new_data()
     if len(csv_files) == 0:
         print(coloured.cyan("[*] No new models to train, exiting..."))
-        sys.exit(0)
+        #sys.exit(0)
+        return []
     else:
         new_data = len(csv_files)
         queue_size = int(config["DEFAULT"]["queue_size"])
@@ -154,7 +157,8 @@ def split_new_data_static(num_workers):
     csv_files = tensorflow_metasurface.find_new_data()
     if len(csv_files) == 0:
         print(coloured.cyan("[*] No new models to train, exiting..."))
-        sys.exit(0)
+        #sys.exit(0)
+        return []
     else:
         new_data = len(csv_files)
         queue_size = math.ceil(new_data / num_workers)
@@ -167,41 +171,42 @@ def split_new_data_static(num_workers):
 
 
 def main():
-    global batch_csv
-    if args.list:
-        available_workers = list_workers()
-        if len(available_workers) != 0:
-            print("[*] %d workers available" % len(available_workers))
-            print(available_workers)
+    while True:
+        global batch_csv
+        if args.list:
+            available_workers = list_workers()
+            if len(available_workers) != 0:
+                print("[*] %d workers available" % len(available_workers))
+                print(available_workers)
+            else:
+                print("[*] No workers currently deployed. Spawn some instances with the --workers [number] script argument.")
+            sys.exit(0)
+        elif args.workers:
+            num_workers = len(list_workers())
+            if num_workers < int(args.workers):
+                to_spawn = int(args.workers) - num_workers
+                print("[*] Deploying %d worker(s)." % to_spawn)
+                deploy_workers(to_spawn, num_workers)
+            elif num_workers > int(args.workers):
+                to_teardown = num_workers - int(args.workers)
+                print("[*] Tearing down %d worker(s)." % to_teardown)
+                teardown_workers(to_teardown, num_workers)
+            batch_csv = split_new_data_static(int(args.workers))
         else:
-            print("[*] No workers currently deployed. Spawn some instances with the --workers [number] script argument.")
-        sys.exit(0)
-    elif args.workers:
-        num_workers = len(list_workers())
-        if num_workers < int(args.workers):
-            to_spawn = int(args.workers) - num_workers
-            print("[*] Deploying %d worker(s)." % to_spawn)
-            deploy_workers(to_spawn, num_workers)
-        elif num_workers > int(args.workers):
-            to_teardown = num_workers - int(args.workers)
-            print("[*] Tearing down %d worker(s)." % to_teardown)
-            teardown_workers(to_teardown, num_workers)
-        batch_csv = split_new_data_static(int(args.workers))
-    else:
-        batch_csv = split_new_data_dynamic()
-        needed_workers = len(batch_csv)          # should be the number of queues in the list
-        num_workers = len(list_workers())
-        if num_workers < needed_workers:
-            to_spawn = needed_workers - num_workers
-            print("[*] Deploying %d worker(s)." % to_spawn)
-            deploy_workers(to_spawn, num_workers)
-        elif num_workers > needed_workers:
-            to_teardown = num_workers - needed_workers
-            print("[*] Tearing down %d worker(s)." % to_teardown)
-            teardown_workers(to_teardown, num_workers)  
-    
-    # serve datasets to workers
-    app.run(host="0.0.0.0")
+            batch_csv = split_new_data_dynamic()
+            needed_workers = len(batch_csv)          # should be the number of queues in the list
+            num_workers = len(list_workers())
+            if num_workers < needed_workers:
+                to_spawn = needed_workers - num_workers
+                print("[*] Deploying %d worker(s)." % to_spawn)
+                deploy_workers(to_spawn, num_workers)
+            elif num_workers > needed_workers:
+                to_teardown = num_workers - needed_workers
+                print("[*] Tearing down %d worker(s)." % to_teardown)
+                teardown_workers(to_teardown, num_workers)  
+        
+        # serve datasets to workers
+        app.run(host="0.0.0.0")
 
 
 config = parse_config()
@@ -218,6 +223,11 @@ def serve_dataset(worker):
     for data_set in batch_csv[worker_index]:
         to_serve.append(data_set.name) 
     return json.dumps(to_serve)
+
+@app.route("/KillServer")   # this is jank and I know it
+def kill_server():
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    shutdown()
 
 
 if __name__ == "__main__":
