@@ -40,7 +40,7 @@ def main():
         # if no data has been assigned to the worker, we want to keep track of how often this is happening to know if worker is needed
         if len(training_jobs) == 0 and not malformed:
             count += 1
-            if count == 6:      # just over a half hour of doing nothing
+            if count == 6 and config["DEFAULT"]["worker_id"] != "worker-0":      # just over a half hour of doing nothing, want at least one worker alive
                 creds = compute_engine.Credentials()
                 name = config["DEFAULT"]["worker_id"]
                 compute.instances().delete(project=config["DEFAULT"]["project_id"], zone=config["DEFAULT"]["zone"], instance=name).execute()    # omae wa mou shindeiru
