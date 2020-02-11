@@ -1,0 +1,5 @@
+https://www.mathworks.com/help/deeplearning/ug/choose-a-multilayer-neural-network-training-function.html
+
+https://www.mathworks.com/help/deeplearning/ref/train.html
+
+https://www.mathworks.com/help/deeplearning/ref/trainr.html

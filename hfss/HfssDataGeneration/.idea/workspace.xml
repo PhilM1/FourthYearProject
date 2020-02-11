@@ -2,16 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d107cc5-398c-4e4b-a6e3-b63c76b9043a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/RandomList.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ContinuousSampling.py" beforeDir="false" afterPath="$PROJECT_DIR$/ContinuousSampling.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataGenerationFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataGenerationFunctions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Hfss.py" beforeDir="false" afterPath="$PROJECT_DIR$/Hfss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hfss.wgeo.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/HfssTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/HfssTest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MonteCarlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/MonteCarlo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SamplingMethod.py" beforeDir="false" afterPath="$PROJECT_DIR$/SamplingMethod.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RandomList.py" beforeDir="false" afterPath="$PROJECT_DIR$/RandomList.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

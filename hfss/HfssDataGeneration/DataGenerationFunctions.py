@@ -3,10 +3,71 @@ The use of this file is to compile methods for different test types. This will m
 using different tests. Furthurmore, the creating of tests in this format will allow for them to be tested beforehand
 """
 
+import re
+
 from ContinuousSampling import ContinuousSampling
 from Hfss import Hfss
-from MonteCarlo import MonteCarlo
+# from MonteCarlo import MonteCarlo
 from RandomList import RandomList
+
+
+def generate_param_list(minimum, maximum, increment):
+    """
+    Function used to generate parameter list
+    :param minimum: minimum value for each parameter
+    :param maximum: maximum value for each parameter
+    :param increment: increment value for each parameter
+    :return: the parameter list
+    """
+    param_list = []
+    curr = list(minimum)
+
+    while True:
+        param_list.append(list(curr))
+        for n in range(len(minimum)):
+            curr[n] += increment[n]
+            if curr[n] > maximum[n]:
+                if n == (len(minimum) - 1):
+                    return param_list
+                curr[n] = minimum[n]
+            else:
+                break
+
+
+def remove_values_from_list(the_list, val):
+    """
+    Method used to remove values from the list
+    :param the_list: list from which to remove
+    :param val: value to remove
+    :return: the list with the remove value
+    """
+    return [value for value in the_list if value != val]
+
+
+def unique_list(list_in, output_folder):
+    """
+    Method used to cut down the list to not repeat already done points
+    :param list_in: is the inputted 2D list. Each Row is a different point to sample
+    :param output_folder: is the folder in which the output was generated.
+    """
+
+    file_object = open(Hfss.generate_output_filename(output_folder), "r")
+
+    for line in file_object:
+        tmp = line.split(",")
+        start = False
+        ls = []
+        for n in range(len(tmp)):
+            if tmp[n] == "OUTPUT":
+                break
+            if start:
+                ls.append(float(re.findall(r'\d+(?:\.\d+)?', tmp[n])[0]))
+            if tmp[n] == "INPUT":
+                start = True
+            list_in = remove_values_from_list(list_in, ls)
+
+    file_object.close()
+    return list_in
 
 
 class DataGenerationFunctions:
@@ -26,6 +87,7 @@ class DataGenerationFunctions:
         self.__output_variables = ["re(S(FloquetPort1,FloquetPort1))", "im(S(FloquetPort1,FloquetPort1))",
                                    "re(S(FloquetPort1,FloquetPort2))", "im(S(FloquetPort1,FloquetPort2))"]
         self.__output_folder = "C:\\Users\\denisshleifman\\Desktop\\4thYearProject\\results2"
+        # self.__output_folder = "C:\\Users\\eshlden\\Desktop\\4thYearProject"
         self.__parameter_names = ["CylinderZ", "Crad", "$theta_scan"]
         self.__parameter_units = ["mm", "mm", "deg"]
         self.__testing = False
@@ -57,38 +119,26 @@ class DataGenerationFunctions:
                                   self.__all_parameter_names, self.__output_variables, self.__output_folder,
                                   self.__testing, mode)
 
-    def random_list(self):
+    def samplingMethod(self, frequency, minimum, maximum, mode, method):
         """
-        Continous sampling method for puck
+
+        :param frequency:
+        :param minimum:
+        :param maximum:
+        :param mode:
+        :param method:
         """
         self.__activate_test_object(0)
-        self.__test_object.set_frequency_sweep(1, 15, 25000)
-        param_list = []
+        self.__test_object.set_frequency_sweep(frequency[0], frequency[1], frequency[2])
 
-        theta = [5.3125, 15.9375, 26.5625, 37.1875, 47.8125, 58.4375, 69.0625, 79.6875]
-        cylinder_z = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        crad = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        for x in cylinder_z:
-            for y in crad:
-                for z in theta:
-                    param_list.append([x, y, z])
-        self.__run_sampling_fcn(RandomList(param_list))
-
-    def continuous_sampling(self):
-        """
-        Continous sampling method for puck
-        """
-        self.__activate_test_object(0)
-        self.__test_object.set_frequency_sweep(1, 15, 25000)
-        self.__run_sampling_fcn(ContinuousSampling([1, 1, 0], [10, 10, 90], [0, 0, 0]))
-
-    def monte_carlo(self):
-        """
-        Continous sampling method for puck
-        """
-        self.__activate_test_object(0)
-        self.__test_object.set_frequency_sweep(1, 15, 25000)
-        self.__run_sampling_fcn(MonteCarlo([1, 1, 0], [9, 9, 85], [0, 0, 0]))
+        if method == 1:
+            self.__run_sampling_fcn(ContinuousSampling(minimum, maximum, mode))
+        elif method == 2:
+            pass
+            # self.__run_sampling_fcn(MonteCarlo(minimum, maximum, mode))
+        elif method == 3:
+            self.__run_sampling_fcn(
+                RandomList(unique_list(generate_param_list(minimum, maximum, mode), self.__output_folder)))
 
     def test_sample_space_edges(self):
         """
