@@ -109,7 +109,7 @@ class Hfss:
         """
         self.mode = mode
         self.o_design = o_design
-        self.output_older = output_folder
+        self.output_folder = output_folder
         self.output_variables = output_variables
         self.min_frequency = 0
         self.max_frequency = 0
@@ -212,16 +212,13 @@ class Hfss:
         :return: the full file name with path
         """
         file_name = str(int(time.time())) + ".csv"
-        log_string = file_name + ",INPUT"
+        log_string = file_name + ""
         for n in range(len(self.parameter_values)):
             log_string += "," + self.parameter_names[n] + "=" + str(self.parameter_values[n]) + self.parameter_units[n]
-        log_string += ",OUTPUT"
-        for n in range(len(self.output_variables)):
-            log_string += "," + self.output_variables[n]
 
-        self.output_file_log.write(log_string + "\n")
+        self.output_file_log.write(log_string + ",\n")
         self.output_file_log.flush()
-        return self.output_older + os.path.sep + file_name
+        return file_name
 
     def analyze_data(self):
         """
@@ -231,7 +228,9 @@ class Hfss:
         self.module_optimetrics.EnableSetup(Hfss.OPTEMETRIC_SETUP_NAME, True)
         self.module_optimetrics.SolveSetup(Hfss.OPTEMETRIC_SETUP_NAME)
         if self.mode == 0 and not self.testing:
-            self.module_report_setup.ExportToFile(Hfss.REPORT_NAME, self.__create_file_name())
+            file_name = self.__create_file_name()
+            self.module_report_setup.ExportToFile(Hfss.REPORT_NAME, self.output_folder + os.path.sep + file_name)
+            self.__parse_file(file_name)
         if self.mode != 2:
             self.o_design.DeleteFullVariation("All", False)
             self.module_report_setup.UpdateReports([Hfss.REPORT_NAME])
@@ -250,3 +249,31 @@ class Hfss:
         :param output_folder: folder where output is generated
         """
         return output_folder + os.path.sep + "outputFileLog.txt"
+
+    def generate_header(self):
+        header = ""
+        for n in range(len(self.parameter_names)):
+            header += self.parameter_names[n].replace(",", " ") + "[" + self.parameter_units[n] + "],"
+        header += "Freq [GHz],"
+        for output in self.output_variables:
+            header += output.replace(",", " ") + ","
+        return header
+
+    def generate_param_string(self):
+        out = ""
+        for val in self.parameter_values:
+            out += str(val) + ","
+        return out
+
+    def parse_file(self, file_name):
+        in_file = open(self.output_folder + os.path.sep + file_name, "r")
+        out_file = open(self.output_folder + os.path.sep + "tmp", "w")
+        out_file.write(self.generate_header())
+        input_string = self.generate_param_string()
+        in_file.readline()
+        for line in in_file:
+            out_file.write(input_string + line)
+        in_file.close()
+        out_file.close()
+        os.remove(self.output_folder + os.path.sep + file_name)
+        os.rename(self.output_folder + os.path.sep + "tmp", self.output_folder + os.path.sep + file_name)
