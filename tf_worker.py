@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+
+# Workaround for google messing with pip packages after my project was mostly done...
+import sys
+sys.path.insert(0, "/opt/conda/lib/python3.7")
+sys.path.insert(1, "/opt/conda/lib/python3.7/site-packages")
+
 import requests
 import json
 import time
