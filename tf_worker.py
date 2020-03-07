@@ -24,9 +24,9 @@ def main():
     malformed = False
     training_jobs_old = set()
     while True:
-        if config["DEFAULT"]["worker_id"] == "worker-0":
+        if config["DEFAULT"]["worker_id"] == "worker-0" and count == 6:
             requests.get("http://%s:5000/KillServer" % config["DEFAULT"]["cluster_master_ip"])      # workaround to trigger reset and get new jobs
-            #time.sleep(60)
+            time.sleep(60)
         training_jobs = requests.get("http://%s:5000/%s" % (config["DEFAULT"]["cluster_master_ip"], config["DEFAULT"]["worker_id"]))
         try:
             training_jobs = set(json.loads(training_jobs.text))
