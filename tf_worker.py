@@ -3,7 +3,7 @@ import requests
 import json
 import time
 import configparser
-from clint.textui import colored as coloured
+#from clint.textui import colored as coloured
 import tensorflow_metasurface
 from google.cloud import storage
 from google.auth import compute_engine
@@ -14,7 +14,8 @@ def parse_config():
     try:
         config.read("config.yaml")
     except:
-        print(coloured.red("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done."))
+        #print(coloured.red("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done."))
+        print("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done.")
     return config
 
 

@@ -10,7 +10,7 @@ import glob
 import shutil
 from io import StringIO
 #from clint.textui import progress
-from clint.textui import colored as coloured
+#from clint.textui import colored as coloured
 
 # tensorflow imports
 from tensorflow.keras.models import Sequential
@@ -26,7 +26,8 @@ def parse_config():
     try:
         config.read("config.yaml")
     except:
-        print(coloured.red("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done."))
+        #print(coloured.red("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done."))
+        print("[!!] Config file not found. Edit config_sample.yaml in this directory, and rename it to config.yaml when done.")
     return config
 
 
@@ -42,10 +43,12 @@ def find_new_data():
     blob_list = bucket.list_blobs()                 # spooky bug where the blob_list is "aware" it's being looped over, 
     for blob in blob_list:                          # needs to be reset with another call to list_blobs()
         if blob.name.split(".")[-1] == "csv" and blob.name.split("/")[-1].split(".")[-2] not in model_list:
-            print(coloured.green("[*] Found new data set: %s" % blob.name.split("/")[-1]))
+            #print(coloured.green("[*] Found new data set: %s" % blob.name.split("/")[-1]))
+            print("[*] Found new data set: %s" % blob.name.split("/")[-1])
             data_list.append(blob)
     if len(data_list) == 0:
-        print(coloured.yellow("[*] No new data was found"))
+        #print(coloured.yellow("[*] No new data was found"))
+        print("[*] No new data was found")
     return data_list
 
 
@@ -95,7 +98,8 @@ def train_new_data(csv_files):
                 inputs[data.columns[i]] = data[data.columns[i]]         # anything else that is appearing in the csv must be an input
         inputs = inputs.to_numpy()
         outputs = outputs.to_numpy()
-        print(coloured.cyan("[*] Now training model for: %s" % (data_set.name)))
+        #print(coloured.cyan("[*] Now training model for: %s" % (data_set.name)))
+        print("[*] Now training model for: %s" % (data_set.name))
         new_model = tensorflow_train(inputs, outputs)
         filename = data_set.name.split("/")[-1].split(".")[-2]             # name trained models the same as the csv file, but without the extension
         try:
@@ -104,15 +108,17 @@ def train_new_data(csv_files):
             os.system("gsutil cp -R '/tmp/" + filename + "' gs://" + config["DEFAULT"]["bucket_id"] + "/models")
             shutil.rmtree("/tmp/" + filename)
         except:
-            print(coloured.red("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?"))
+            #print(coloured.red("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?"))
+            print("[!!] Problem writing trained model to disk. Does the path specified in the config exist and have write permissions for this user?")
             pass
 
 
 def main():
     csv_files = find_new_data()
     if len(csv_files) == 0:
-        print(coloured.cyan("[*] No new models to train, exiting..."))
-        sys.exit(0)
+        #print(coloured.cyan("[*] No new models to train, exiting..."))
+        print("[*] No new models to train, exiting...")
+        return
     train_new_data(csv_files)
         
 
