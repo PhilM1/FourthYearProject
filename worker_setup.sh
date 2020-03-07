@@ -21,5 +21,8 @@ printf "[DEFAULT]\nproject_id = $PROJECT_ID\nzone = $ZONE\ncluster_master_ip = $
 
 # Google changed default pip packages for root, so we need to drop permissions. 
 # This looks janky, but Google changed this on me in March... Will revisit and do this better if I have time.
-su lindsaymunromail 
-python3 tf_worker.py
+cd /
+chown -R lindsaymunromail:lindsaymunromail FourthYearProject
+su lindsaymunromail
+cd /FourthYearProject
+python3 tf_worker.py"
