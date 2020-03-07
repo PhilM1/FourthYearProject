@@ -5,8 +5,8 @@ apt install -y git
 git clone https://github.com/PhilM1/FourthYearProject.git
 
 # install pip requirements
-apt install -y python3-pip
-pip3 install --user clint
+#apt install -y python3-pip
+#pip3 install --user clint
 
 # set up config
 cd FourthYearProject
