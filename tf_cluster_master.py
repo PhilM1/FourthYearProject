@@ -204,7 +204,7 @@ def main():
                 to_teardown = num_workers - needed_workers
                 print("[*] Tearing down %d worker(s)." % to_teardown)
                 teardown_workers(to_teardown, num_workers)  
-        
+
         # serve datasets to workers
         app.run(host="0.0.0.0")
 

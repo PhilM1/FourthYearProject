@@ -18,10 +18,5 @@ BUCKET_ID=$(curl http://metadata.google.internal/computeMetadata/v1/instance/att
 printf "[DEFAULT]\nproject_id = $PROJECT_ID\nzone = $ZONE\ncluster_master_ip = $CLUSTER_MASTER_IP\nworker_id = $WORKER_ID\nbucket_id = $BUCKET_ID\n" > config.yaml
 
 # let er rip and pray she don't crash and burn
-
-# Google changed default pip packages for root, so we need to drop permissions. 
-# This looks janky, but Google changed this on me in March... Will revisit and do this better if I have time.
-cd /
-chown -R lindsaymunromail:lindsaymunromail FourthYearProject
-su lindsaymunromail -c "cd /FourthYearProject && python3 tf_worker.py"
-
+cd /FourthYearProject
+/opt/conda/bin/python tf_worker.py

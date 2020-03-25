@@ -2,8 +2,6 @@
 
 # Workaround for google messing with pip packages after my project was mostly done...
 import sys
-sys.path.insert(0, "/opt/conda/lib/python3.7")
-sys.path.insert(1, "/opt/conda/lib/python3.7/site-packages")
 
 import requests
 import json
@@ -64,7 +62,7 @@ def main():
             
             tensorflow_metasurface.train_new_data(training_blobs)
         training_jobs_old.update(training_jobs)
-        #time.sleep(240)
+        time.sleep(240)
     
 
 config = parse_config()
